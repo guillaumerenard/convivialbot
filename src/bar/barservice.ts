@@ -9,11 +9,19 @@ class BarService {
      * Search bars
      * @param city 
      */
-    public static searchBars(city: string, atmosphere: string): Promise<any> {
+    public static searchBars(city: string, atmosphere: string, withWho: string): Promise<any> {
+        let query: string  = "";
+        query = `&city=${city}`;
+        if(atmosphere !== "") {
+            query += `&mood=${atmosphere}`;
+        }
+        if(withWho !== "") {
+            query += `&occasion=${withWho}`;
+        }
         return new Promise<any>((resolve, reject) => {
             https.get({
                 host: BarService.host,
-                path: `/search?entity=Bar&q=*&limit=20&start=0&city=${city}&mood=${atmosphere}&sortby=popularity`,
+                path: `/search?entity=Bar&q=*&limit=10&start=0${query}&sortby=popularity`,
                 headers: {
                     "Accept": "application/json",
                     "X-Requested-With": "XMLHttpRequest"

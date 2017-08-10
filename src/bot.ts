@@ -1,6 +1,6 @@
 import * as builder from "botbuilder";
 import * as apiai from "apiai";
-import BarService from "./bar/barservice";
+import RootDialog from "./dialogs/rootdialog";
 import GreetingDialog from "./dialogs/greetingdialog";
 import SearchBarDialog from "./dialogs/searchbardialog";
 
@@ -17,8 +17,11 @@ class DevBot {
         });
         this.apiaiApp = apiai("4d5fdf0dda3d416f8c8d4ab518b04f27");
         this.bot = new builder.UniversalBot(this.connector);
-        new GreetingDialog(this.apiaiApp).register(this.bot, "/");
-        new SearchBarDialog().register(this.bot, "searchBar");
+
+        // DIalogs
+        new RootDialog(this.apiaiApp).register(this.bot, "/");
+        new GreetingDialog().register(this.bot, "greeting");
+        new SearchBarDialog(this.apiaiApp).register(this.bot, "searchBar");        
     }
 }
 

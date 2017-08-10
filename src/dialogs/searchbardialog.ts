@@ -4,12 +4,13 @@ import BaseDialog from "./basedialog";
 
 class SearchBarDialog extends BaseDialog{
 
-    constructor() {
+    constructor(apiaiApp: apiai.Application) {
         super();
         this.dialog = [
             (session, args, next) => {
                 session.dialogData.barLocation = args.parameters['geo-city'];
                 session.dialogData.barAtmosphere = args.parameters.BarAtmosphere;
+                session.dialogData.barWithWho = args.parameters.BarWithWho;
                 if(session.dialogData.barLocation !== "") {
                     next();
                 }
@@ -21,19 +22,10 @@ class SearchBarDialog extends BaseDialog{
                 if(results.response) {
                     session.dialogData.barLocation = results.response;
                 }
-                if(session.dialogData.barAtmosphere !== "") {
-                    next();
-                }
-                else {
-                    builder.Prompts.choice(session, "What kind of atmosphere do you want ?", ["Casual", "Chill Out", "Classic", "Intimate", "Party", "Sophisticated"]);
-                }
-            },
-            (session, results) => {
-                session.dialogData.barAtmosphere = results.response.entity;
                 session.send(`I am looking for you to bar in ${session.dialogData.barLocation} matching your criteria`);
-                BarService.searchBars(session.dialogData.barLocation, session.dialogData.barAtmosphere).then(searchResults => {
-                    session.send(`I found ${searchResults.hits.found} matching your request`);
+                BarService.searchBars(session.dialogData.barLocation, session.dialogData.barAtmosphere, session.dialogData.barWithWho).then(searchResults => {
                     if(searchResults.hits.hit.length > 0) {
+                        session.send(`I found ${searchResults.hits.found} bars matching your request`);                 
                         session.send("Here are the most popular");
                         let bestResultMessage = new builder.Message(session);
                         bestResultMessage.attachmentLayout(builder.AttachmentLayout.carousel);
@@ -47,8 +39,30 @@ class SearchBarDialog extends BaseDialog{
                         }
                         bestResultMessage.attachments(bestResultAttachments);
                         session.send(bestResultMessage);
+                        builder.Prompts.text(session, "Do you have other criteria for your search ?");
+                    }
+                    else {
+                        session.send("Sorry, I did not find any bar that matches your criteria");
+                        session.endDialog();
                     }
                 });
+            },
+            (session, results, next) => {
+                let request = apiaiApp.textRequest(results.response, {
+                    sessionId: `${Math.random()}`
+                });
+                request.on("response", response => {
+                    if(response.result.metadata.intentName === "SearchBar") {
+                        session.replaceDialog("searchBar", response.result);
+                    }
+                    else {
+                        session.endDialog();
+                    }
+                });
+                request.on("error", error => {
+                    session.endDialog("Outch !");
+                });
+                request.end();
             }
         ]
     }
