@@ -24,5 +24,8 @@
     "botbuilder": "^3.6.0",
     "restify": "^4.3.0",
     "typescript": "^2.4.2"
+  },
+  "engines": {
+    "node":"6.11.1"
   }
 }
