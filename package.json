@@ -4,7 +4,8 @@
   "description": "A sample bot for getting started with Bot Framework",
   "main": "server.js",
   "scripts": {
-    "test": ""
+    "test": "",
+    "postinstall": "tsc"
   },
   "repository": {
     "type": "git",

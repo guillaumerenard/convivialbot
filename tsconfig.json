@@ -5,7 +5,8 @@
     "removeComments": false,
     "sourceMap": true,
     "target": "es2015",
-    "module": "commonjs"
+    "module": "commonjs",
+    "outDir": "build"
   },
   "exclude": [
     "node_modules",
