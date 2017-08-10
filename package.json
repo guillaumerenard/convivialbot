@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/fuselabs/echobot#readme",
   "dependencies": {
+    "@types/node": "^8.0.20",
     "botbuilder": "^3.6.0",
-    "restify": "^4.3.0"
+    "restify": "^4.3.0",
+    "typescript": "^2.4.2"
   }
 }
