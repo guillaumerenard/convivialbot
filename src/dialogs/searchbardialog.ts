@@ -1,4 +1,5 @@
 import * as builder from "botbuilder";
+import * as apiai from "apiai";
 import BarService from "../bar/barservice";
 import BaseDialog from "./basedialog";
 
@@ -8,9 +9,7 @@ class SearchBarDialog extends BaseDialog{
         super();
         this.dialog = [
             (session, args, next) => {
-                session.dialogData.barLocation = args.parameters['geo-city'];
-                session.dialogData.barAtmosphere = args.parameters.BarAtmosphere;
-                session.dialogData.barWithWho = args.parameters.BarWithWho;
+                this.initDialog(session, args);
                 if(session.dialogData.barLocation !== "") {
                     next();
                 }
@@ -49,10 +48,11 @@ class SearchBarDialog extends BaseDialog{
             },
             (session, results, next) => {
                 let request = apiaiApp.textRequest(results.response, {
-                    sessionId: `${Math.random()}`
+                    sessionId: `${Math.random()}`,
+                    contexts: session.dialogData.contexts
                 });
                 request.on("response", response => {
-                    if(response.result.metadata.intentName === "SearchBar") {
+                    if(response.result.metadata.intentName === "SearchBar" || response.result.metadata.intentName === "AddSearchBarCriteria") {
                         session.replaceDialog("searchBar", response.result);
                     }
                     else {
@@ -65,6 +65,28 @@ class SearchBarDialog extends BaseDialog{
                 request.end();
             }
         ]
+    }
+
+    /**
+     * Initialize dialogue with api.ai response result
+     * @param session 
+     * @param args 
+     */
+    private initDialog(session: builder.Session, args: any): void {
+        console.log(args);
+        if(args.metadata.intentName === "AddSearchBarCriteria") {
+            args.parameters.BarCity !== "" ? session.dialogData.barLocation = args.parameters.BarCity : session.dialogData.barLocation = args.parameters.ContextBarCity;
+            args.parameters.BarAtmosphere !== "" ? session.dialogData.barAtmosphere = args.parameters.BarAtmosphere : session.dialogData.barAtmosphere = args.parameters.ContextBarAtmosphere;
+            args.parameters.BarWithWho !== "" ? session.dialogData.barWithWho = args.parameters.BarWithWho : session.dialogData.barWithWho = args.parameters.ContextBarAtmosphere;
+        }
+        else {
+            session.dialogData.barLocation = args.parameters.BarCity;
+            session.dialogData.barAtmosphere = args.parameters.BarAtmosphere;
+            session.dialogData.barWithWho = args.parameters.BarWithWho;
+        }
+        session.dialogData.contexts = args.contexts;
+        console.log(session.dialogData);
+        console.log(session.dialogData.contexts);
     }
 }
 
