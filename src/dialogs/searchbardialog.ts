@@ -18,6 +18,30 @@ class SearchBarDialog extends BaseDialog{
                 }
             },
             (session, results, next) => {
+                if(session.dialogData.barLocation !== "") {
+                    next();
+                }
+                else {
+                    let request = apiaiApp.textRequest(results.response, {
+                        sessionId: `${Math.random()}`,
+                        contexts: session.dialogData.contexts
+                    });
+                    request.on("response", response => {
+                        if(response.result.metadata.intentName === "SearchBar" || response.result.metadata.intentName === "AddSearchBarCriteria") {
+                            session.replaceDialog("searchBar", response.result);
+                        }
+                        else {
+                            session.send("Sorry, I do not know this city");
+                            session.replaceDialog("searchBar", session.dialogData.result);
+                        }
+                    });
+                    request.on("error", error => {
+                        session.endDialog("Outch !");
+                    });
+                    request.end();
+                }
+            },
+            (session, results, next) => {
                 if(results.response) {
                     session.dialogData.barLocation = results.response;
                 }
@@ -83,6 +107,7 @@ class SearchBarDialog extends BaseDialog{
             session.dialogData.barAtmosphere = args.parameters.BarAtmosphere;
             session.dialogData.barWithWho = args.parameters.BarWithWho;
         }
+        session.dialogData.result = args;
         session.dialogData.contexts = args.contexts;
     }
 }
