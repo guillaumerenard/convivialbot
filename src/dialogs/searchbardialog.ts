@@ -73,7 +73,6 @@ class SearchBarDialog extends BaseDialog{
      * @param args 
      */
     private initDialog(session: builder.Session, args: any): void {
-        console.log(args);
         if(args.metadata.intentName === "AddSearchBarCriteria") {
             args.parameters.BarCity !== "" ? session.dialogData.barLocation = args.parameters.BarCity : session.dialogData.barLocation = args.parameters.ContextBarCity;
             args.parameters.BarAtmosphere !== "" ? session.dialogData.barAtmosphere = args.parameters.BarAtmosphere : session.dialogData.barAtmosphere = args.parameters.ContextBarAtmosphere;
@@ -85,8 +84,6 @@ class SearchBarDialog extends BaseDialog{
             session.dialogData.barWithWho = args.parameters.BarWithWho;
         }
         session.dialogData.contexts = args.contexts;
-        console.log(session.dialogData);
-        console.log(session.dialogData.contexts);
     }
 }
 
