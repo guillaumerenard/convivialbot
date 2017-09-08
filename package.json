@@ -1,7 +1,7 @@
 {
-  "name": "echobot",
+  "name": "convivialbot",
   "version": "1.0.0",
-  "description": "A sample bot for getting started with Bot Framework",
+  "description": "Convivial bot",
   "main": "server.js",
   "scripts": {
     "test": "",
@@ -9,17 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fuselabs/echobot.git"
+    "url": "git+https://github.com/guillaumerenard/convivialbot"
   },
   "keywords": [
     "botframework"
   ],
-  "author": "Fuse Labs",
+  "author": "Guillaume RENARD",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fuselabs/echobot/issues"
+    "url": "https://github.com/guillaumerenard/convivialbot/issues"
   },
-  "homepage": "https://github.com/fuselabs/echobot#readme",
+  "homepage": "https://github.com/guillaumerenard/convivialbot#readme",
   "dependencies": {
     "@types/node": "^8.0.20",
     "apiai": "^4.0.3",

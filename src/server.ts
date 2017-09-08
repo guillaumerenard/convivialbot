@@ -1,9 +1,9 @@
 import "dotenv/config";
 import * as restify from "restify";
 import * as builder from "botbuilder";
-import DevBot from "./bot";
+import ConvivialBot from "./convivialbot";
 
-const bot = new DevBot();
+const bot = new ConvivialBot();
 
 // Setup Restify Server
 const server = restify.createServer();

@@ -4,7 +4,7 @@ import RootDialog from "./dialogs/rootdialog";
 import GreetingDialog from "./dialogs/greetingdialog";
 import SearchBarDialog from "./dialogs/searchbardialog";
 
-class DevBot {
+class ConvivialBot {
 
     public connector: builder.ChatConnector;
     private bot: builder.UniversalBot;
@@ -18,11 +18,11 @@ class DevBot {
         this.apiaiApp = apiai("4d5fdf0dda3d416f8c8d4ab518b04f27");
         this.bot = new builder.UniversalBot(this.connector);
 
-        // DIalogs
+        // Dialogs
         new RootDialog(this.apiaiApp).register(this.bot, "/");
         new GreetingDialog().register(this.bot, "greeting");
         new SearchBarDialog(this.apiaiApp).register(this.bot, "searchBar");        
     }
 }
 
-export default DevBot;
+export default ConvivialBot;
