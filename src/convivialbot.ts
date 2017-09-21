@@ -3,6 +3,7 @@ import * as apiai from "apiai";
 import RootDialog from "./dialogs/rootdialog";
 import GreetingDialog from "./dialogs/greetingdialog";
 import SearchBarDialog from "./dialogs/searchbardialog";
+import ApiAiDialog from "./dialogs/apiaidialog";
 
 class ConvivialBot {
 
@@ -21,7 +22,8 @@ class ConvivialBot {
         // Dialogs
         new RootDialog(this.apiaiApp).register(this.bot, "/");
         new GreetingDialog().register(this.bot, "greeting");
-        new SearchBarDialog(this.apiaiApp).register(this.bot, "searchBar");        
+        new SearchBarDialog(this.apiaiApp).register(this.bot, "searchBar");
+        new ApiAiDialog().register(this.bot, "apiAi");
     }
 }
 

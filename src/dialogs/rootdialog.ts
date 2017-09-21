@@ -32,7 +32,7 @@ class RootDialog extends BaseDialog{
                         session.beginDialog("searchBar", response.result);
                     }
                     else {
-                        session.endConversation("Bye !");
+                        session.beginDialog("apiAi", response.result);
                     }
                 });
                 request.on("error", error => {
