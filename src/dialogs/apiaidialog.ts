@@ -15,6 +15,8 @@ class ApiAiDialog extends BaseDialog{
                     switch(apiAiMessage.type) {
                         case 0:
                             responseMessage.text(apiAiMessage.speech);
+                            session.send(responseMessage);
+                            session.endDialog();
                             break;
                         case 1:
                             responseMessage.attachmentLayout(builder.AttachmentLayout.carousel);
@@ -24,17 +26,24 @@ class ApiAiDialog extends BaseDialog{
                                 .text("")
                                 .images([builder.CardImage.create(session, apiAiMessage.imageUrl)]));
                             responseMessage.attachments(responseMessageAttachments);
+                            session.send(responseMessage);
+                            session.endDialog();
+                            break;
+                        case 2:
+                            builder.Prompts.choice(session, apiAiMessage.title, apiAiMessage.replies);
                             break;
                         case 3:
                             responseMessageAttachments.push(new builder.HeroCard(session)
                                 .images([builder.CardImage.create(session, apiAiMessage.imageUrl)]));
                             responseMessage.attachments(responseMessageAttachments);
+                            session.send(responseMessage);
+                            session.endDialog();
                             break;
                         default:
                             break;
                     }
-                    session.send(responseMessage);
                 }
+            }, (session, results, next) => {
                 session.endDialog();
             }
         ]
