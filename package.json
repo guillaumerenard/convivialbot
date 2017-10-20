@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "",
+    "build": "tsc",
+    "watch": "tsc --watch",
     "postinstall": "tsc"
   },
   "repository": {

@@ -31,6 +31,11 @@ class RootDialog extends BaseDialog{
                     if(response.result.metadata.intentName === "SearchBar") {
                         session.beginDialog("searchBar", response.result);
                     }
+                    else if(response.result.metadata.intentName === "Agent") {
+                        session.userData.isAgent === null ? session.userData.isAgent = true : session.userData.isAgent = !session.userData.isAgent;
+                        session.userData.isAgent ? session.send("You are an agent !") : session.send("You are not an agent !");
+                        next();
+                    }
                     else {
                         session.beginDialog("apiAi", response.result);
                     }
