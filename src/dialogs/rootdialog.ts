@@ -49,7 +49,7 @@ class RootDialog extends BaseDialog{
                                   timestamp:Date.now(),
                                   pass_thread_control:{
                                     "new_owner_app_id":"263902037430900",
-                                    "metadata":""
+                                    "metadata":"Et hop !"
                                   }
                             }
                         });
