@@ -57,14 +57,16 @@ class RootDialog extends BaseDialog{
                         }, message => {
                             message.on("data", handoverChunk => {
                                 session.send("Facebook handover !");
+                                next();
                             });
                         });
                         handoverRequest.on("error", handoverError => {
                             session.send(`Facebook handover error : ${handoverError.message}`);
+                            next();
                         });
                         handoverRequest.write(handoverBody);
                         handoverRequest.end();
-                        next();
+                        session.sendTyping();
                     }
                     else {
                         session.beginDialog("apiAi", response.result);
