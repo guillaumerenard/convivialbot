@@ -39,24 +39,8 @@ class RootDialog extends BaseDialog{
                     }
                     else if(response.result.metadata.intentName === "Handover") {
                         session.send(`Ton ID : ${session.message.user.id}`);
-                        //http.request("https://graph.facebook.com/v2.6/me/pass_thread_control?access_token=<PAGE_ACCESS_TOKEN>")
-                        let handoverMessage = new builder.Message(session).text("Facebook handover");
-                        handoverMessage.sourceEvent({
-                            Facebook: {
-                                sender:{
-                                    id: session.message.user.id
-                                  },
-                                  recipient:{
-                                    id:140061593257238
-                                  },
-                                  timestamp:Date.now(),
-                                  pass_thread_control:{
-                                    new_owner_app_id:263902037430900,
-                                    metadata:"Et hop !"
-                                  }
-                            }
-                        });
-                        session.send(handoverMessage);
+                        session.send("Attention un ogre !");
+                        http.request(`https://graph.facebook.com/v2.6/me/pass_thread_control?access_token=${process.env.FACEBOOK_PAGE_ACCESS_TOKEN}&recipient={"id":"${session.message.user.id}"}&target_app_id=263902037430900`)
                         next();
                     }
                     else {
