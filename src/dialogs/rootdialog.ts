@@ -37,6 +37,7 @@ class RootDialog extends BaseDialog{
                         next();
                     }
                     else if(response.result.metadata.intentName === "Handover") {
+
                         let handoverMessage = new builder.Message(session).text("Facebook handover");
                         handoverMessage.sourceEvent({
                             Facebook: {
@@ -44,12 +45,12 @@ class RootDialog extends BaseDialog{
                                     id: session.message.user.id
                                   },
                                   recipient:{
-                                    "id":"140061593257238"
+                                    id:140061593257238
                                   },
                                   timestamp:Date.now(),
                                   pass_thread_control:{
-                                    "new_owner_app_id":"263902037430900",
-                                    "metadata":"Et hop !"
+                                    new_owner_app_id:263902037430900,
+                                    metadata:"Et hop !"
                                   }
                             }
                         });
