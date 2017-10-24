@@ -36,6 +36,26 @@ class RootDialog extends BaseDialog{
                         session.userData.isAgent ? session.send("You are an agent !") : session.send("You are not an agent !");
                         next();
                     }
+                    else if(response.result.metadata.intentName === "Handover") {
+                        let handoverMessage = new builder.Message(session).text("Facebook handover");
+                        handoverMessage.sourceEvent({
+                            Facebook: {
+                                sender:{
+                                    id: session.message.user.id
+                                  },
+                                  recipient:{
+                                    "id":"140061593257238"
+                                  },
+                                  timestamp:Date.now(),
+                                  pass_thread_control:{
+                                    "new_owner_app_id":"263902037430900",
+                                    "metadata":""
+                                  }
+                            }
+                        });
+                        session.send(handoverMessage);
+                        next();
+                    }
                     else {
                         session.beginDialog("apiAi", response.result);
                     }

@@ -18,7 +18,7 @@ class ConvivialBot {
             appId: process.env.MICROSOFT_APP_ID,
             appPassword: process.env.MICROSOFT_APP_PASSWORD
         });
-        this.apiaiApp = apiai("4d5fdf0dda3d416f8c8d4ab518b04f27");
+        this.apiaiApp = apiai(process.env.APIAI_TOKEN);
         this.bot = new builder.UniversalBot(this.connector);
 
         // Middleware
