@@ -49,8 +49,8 @@ class RootDialog extends BaseDialog{
                             session.send("response");
                         });
                         handoverRequest.on("error", handoverError => {
-                            session.send("error");
-                        })
+                            session.send(`Error : ${handoverError.message}`);
+                        });
                         next();
                     }
                     else {
