@@ -57,7 +57,6 @@ class RootDialog extends BaseDialog{
                         }, message => {
                             message.on("data", handoverChunk => {
                                 session.send("Facebook handover !");
-                                next();
                             });
                         });
                         handoverRequest.on("error", handoverError => {
