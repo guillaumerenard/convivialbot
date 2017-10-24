@@ -1,5 +1,5 @@
 import * as builder from "botbuilder";
-import * as http from "http";
+import * as https from "https";
 import * as apiai from "apiai";
 import BaseDialog from "./basedialog";
 
@@ -40,7 +40,17 @@ class RootDialog extends BaseDialog{
                     else if(response.result.metadata.intentName === "Handover") {
                         session.send(`Ton ID : ${session.message.user.id}`);
                         session.send("Attention un ogre !");
-                        http.request(`https://graph.facebook.com/v2.6/me/pass_thread_control?access_token=${process.env.FACEBOOK_PAGE_ACCESS_TOKEN}&recipient={"id":"${session.message.user.id}"}&target_app_id=263902037430900`)
+                        let handoverRequest = https.request({
+                            hostname: "https://graph.facebook.com",
+                            path: `/v2.6/me/pass_thread_control?access_token=${process.env.FACEBOOK_PAGE_ACCESS_TOKEN}&recipient={"id":"${session.message.user.id}"}&target_app_id=263902037430900`,
+                            method: "POST"
+                        });
+                        handoverRequest.on("response", handoverResponse => {
+                            session.send("response");
+                        });
+                        handoverRequest.on("error", handoverError => {
+                            session.send("error");
+                        })
                         next();
                     }
                     else {
