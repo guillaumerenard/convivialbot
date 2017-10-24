@@ -1,4 +1,5 @@
 import * as builder from "botbuilder";
+import * as http from "http";
 import * as apiai from "apiai";
 import BaseDialog from "./basedialog";
 
@@ -37,7 +38,8 @@ class RootDialog extends BaseDialog{
                         next();
                     }
                     else if(response.result.metadata.intentName === "Handover") {
-
+                        session.send(`Ton ID : ${session.message.user.id}`);
+                        http.request("https://graph.facebook.com/v2.6/me/pass_thread_control?access_token=<PAGE_ACCESS_TOKEN>")
                         let handoverMessage = new builder.Message(session).text("Facebook handover");
                         handoverMessage.sourceEvent({
                             Facebook: {
