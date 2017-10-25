@@ -23,7 +23,9 @@ class SearchBarDialog extends BaseDialog{
                                 }]
                             }
                         });
-                    builder.Prompts.text(session, cityMessage);
+                    builder.Prompts.text(session, cityMessage, {
+                        promptAfterAction: false
+                    });
                     //builder.Prompts.text(session, "In which city are you looking for a bar ?");
                 }
             },
