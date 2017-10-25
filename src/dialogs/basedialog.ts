@@ -2,7 +2,7 @@ import * as builder from "botbuilder";
 
 abstract class BaseDialog {
 
-    protected dialog: builder.IDialogWaterfallStep[] | builder.IDialogWaterfallStep;
+    protected dialog: builder.IDialogWaterfallStep[] | builder.IDialogWaterfallStep | builder.IntentDialog;
 
     /**
      * Register dialog to bot

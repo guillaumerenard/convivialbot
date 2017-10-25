@@ -5,37 +5,31 @@ class BarCityDialog extends BaseDialog{
 
     constructor() {
         super();
-        this.dialog = [
-            (session, args, next) => {
-                if(session.message.source === "facebook") {
-                    let cityMessage = new builder.Message(session).text("In which city are you looking for a bar ?")
-                    .sourceEvent({
-                        facebook: {
-                            quick_replies: [{
-                                content_type: "location"
-                            }]
-                        }
-                    });
-                    session.send(cityMessage);
+        this.dialog = new builder.IntentDialog();
+        this.dialog.onBegin((session, args, next) => {
+            let cityMessage = new builder.Message(session).text("In which city are you looking for a bar ?");
+            cityMessage.sourceEvent({
+                facebook: {
+                    quick_replies: [{
+                        content_type: "location"
+                    }]
                 }
-                else {
-                    builder.Prompts.text(session, "In which city are you looking for a bar ?");
+            });
+            session.send(cityMessage);
+        });
+        this.dialog.onDefault(session => {
+            if (session.message.sourceEvent.message && session.message.sourceEvent.message.attachments) {
+                var attachment = session.message.sourceEvent.message.attachments[0];
+                if (attachment.type == 'location') {
+                    session.endDialogWithResult({ response: { entity: {
+                        title: attachment.title,
+                        coordinates: attachment.payload.coordinates
+                    }}})
                 }
-            },
-            (session, results, next) => {
-                if (session.message.sourceEvent.message && session.message.sourceEvent.message.attachments) {
-                    var attachment = session.message.sourceEvent.message.attachments[0];
-                    if (attachment.type == 'location') {
-                        session.endDialogWithResult({ response: { entity: {
-                            title: attachment.title,
-                            coordinates: attachment.payload.coordinates
-                        }}})
-                    }
-                } else {
-                    session.endDialogWithResult({response: results.response});
-                }
+            } else {
+                session.endDialogWithResult({response: session.message.text});
             }
-        ];
+        });
     }
     
 }
