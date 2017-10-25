@@ -49,6 +49,7 @@ class SearchBarDialog extends BaseDialog{
             },
             (session, results, next) => {
                 session.send(`I am looking for you to bar in ${session.dialogData.barCity} matching your criteria`);
+                session.send(`${session.dialogData.barLatitude} ${session.dialogData.barLongitude}`);
                 session.sendTyping();
                 session.dialogData.initPromise.then(() => {
                     session.send(`${session.dialogData.barLatitude} ${session.dialogData.barLongitude}`);
