@@ -50,9 +50,6 @@ class SearchBarDialog extends BaseDialog{
             (session, results, next) => {
                 session.send(`I am looking for you to bar in ${session.dialogData.barCity} matching your criteria`);
                 session.sendTyping();
-                if(session.dialogData.initPromise) {
-                    session.send("ma promise est là");
-                }
                 session.dialogData.initPromise.then(() => {
                     session.send(`${session.dialogData.barLatitude} ${session.dialogData.barLongitude}`);
                     BarService.searchBars(session.dialogData.barLatitude, session.dialogData.barLongitude, session.dialogData.barAtmosphere, session.dialogData.barWithWho).then(searchResults => {
@@ -110,6 +107,7 @@ class SearchBarDialog extends BaseDialog{
      */
     private initDialog(session: builder.Session, args: any): Promise<null> {
         return new Promise<null>((resolve, reject) => {
+            session.send("Start init");
             if(args) {
                 if(args.metadata.intentName === "AddSearchBarCriteria") {
                     args.parameters.BarCity !== "" ? session.dialogData.barCity = args.parameters.BarCity : session.dialogData.barCity = args.parameters.ContextBarCity;
