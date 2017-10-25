@@ -3,36 +3,58 @@ import * as https from "https";
 
 class BarService {
 
-    private static host: string = "www.worldsbestbars.com";
-
     /**
      * Search bars
      * @param city 
      */
     public static searchBars(city: string, atmosphere: string, withWho: string): Promise<any> {
-        let query: string  = "";
-        query = `&city=${city}`;
-        if(atmosphere !== "") {
-            query += `&mood=${atmosphere}`;
-        }
-        if(withWho !== "") {
-            query += `&occasion=${withWho}`;
-        }
+        return new Promise<any>((resolve, reject) => {
+        this.getCityGeolocation(city).then(cityGeolocation => {
+                https.get({
+                    host: process.env.STORE_LOCATOR_API_HOST,
+                    path: `${process.env.STORE_LOCATOR_API_PATH}?query=(and%20channel:'ON%20TRADE')(and%20geolocation:'${cityGeolocation.lat},${cityGeolocation.lng},500')`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "api_key": process.env.STORE_LOCATOR_API_KEY
+                    }
+                }, response => {
+                    let body = "";
+                    response.on("data", data => {
+                        body += data;
+                    });
+                    response.on("end", () => {
+                        if(body) {
+                            resolve(JSON.parse(body));
+                        }
+                        else {
+                            resolve(null);
+                        } 
+                    });
+                    response.on("error", error => {
+                        reject(error);
+                    });
+                });
+            }, error => {
+                reject(error);
+            });
+        });
+    }
+
+    private static getCityGeolocation(city: string) {
         return new Promise<any>((resolve, reject) => {
             https.get({
-                host: BarService.host,
-                path: `/search?entity=Bar&q=*&limit=10&start=0${query}&sortby=popularity`,
-                headers: {
-                    "Accept": "application/json",
-                    "X-Requested-With": "XMLHttpRequest"
-                }
+                host: "maps.googleapis.com",
+                path: `/maps/api/geocode/json?key=${process.env.GOOGLE_MAPS_API_KEY}&address=${city}`
             }, response => {
                 let body = "";
                 response.on("data", data => {
                     body += data;
                 });
                 response.on("end", () => {
-                    resolve(JSON.parse(body));
+                    resolve(JSON.parse(body).results[0].geometry.location);
+                });
+                response.on("error", error => {
+                    reject(error);
                 });
             });
         });

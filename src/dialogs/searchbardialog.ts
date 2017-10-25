@@ -46,27 +46,24 @@ class SearchBarDialog extends BaseDialog{
                     session.dialogData.barLocation = results.response;
                 }
                 session.send(`I am looking for you to bar in ${session.dialogData.barLocation} matching your criteria`);
+                session.sendTyping();
                 BarService.searchBars(session.dialogData.barLocation, session.dialogData.barAtmosphere, session.dialogData.barWithWho).then(searchResults => {
-                    if(searchResults.hits.hit.length > 0) {
-                        session.send(`I found ${searchResults.hits.found} bars matching your request`);                 
+                    if(searchResults && searchResults.status.foundOutlets > 0) {
+                        session.send(`I found ${searchResults.status.foundOutlets} bars matching your request`);
                         session.send("Here are the most popular");
                         let bestResultMessage = new builder.Message(session);
                         bestResultMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                         let bestResultAttachments: builder.AttachmentType[] = [];
-                        for(let i:number=0; i < searchResults.hits.hit.length && i < 5; i++) {
+                        for(let i:number=0; i < searchResults.status.foundOutlets && i < 5; i++) {
                             bestResultAttachments.push(new builder.HeroCard(session)
-                                .title(searchResults.hits.hit[i].fields.name)
-                                .subtitle(searchResults.hits.hit[i].fields.address)
-                                .text(searchResults.hits.hit[i].fields.description)
-                                .images([builder.CardImage.create(session, searchResults.hits.hit[i].fields.wbb_media_url)]));
+                                .title(searchResults.outlets[i].name)
+                                .subtitle(`${searchResults.outlets[i].address.street} ${searchResults.outlets[i].address.postalCode} ${searchResults.outlets[i].address.city}`)
+                                .text(`${searchResults.outlets[i].type} phone: ${searchResults.outlets[i].contact.phone}`)
+                                .images([builder.CardImage.create(session, "https://www.scandichotels.com/imagevault/publishedmedia/suw58cmdyrxfvvjep2a5/Scandic-Malmen-Interior-bar-Lilla-hotellbaren-over.jpg")]));
                         }
                         bestResultMessage.attachments(bestResultAttachments);
                         session.send(bestResultMessage);
                         builder.Prompts.text(session, "Do you have other criteria for your search ?");
-                    }
-                    else {
-                        session.send("Sorry, I did not find any bar that matches your criteria");
-                        session.endDialog();
                     }
                 });
             },
