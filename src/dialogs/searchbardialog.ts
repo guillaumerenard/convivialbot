@@ -70,6 +70,10 @@ class SearchBarDialog extends BaseDialog{
                             session.send(bestResultMessage);
                             builder.Prompts.text(session, "Do you have other criteria for your search ?");
                         }
+                        else {
+                            session.send("Sorry, I did not find any bar that matches your criteria");
+                            session.endDialog();
+                        }
                     });
                 }, reason => {
                     session.endDialog(reason);
