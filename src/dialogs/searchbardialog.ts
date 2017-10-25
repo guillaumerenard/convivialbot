@@ -22,6 +22,11 @@ class SearchBarDialog extends BaseDialog{
                 if(session.dialogData.barCity !== "") {
                     next();
                 }
+                else if(results.response.response.entity) {
+                    session.send(`J'AI !!!! ${results.response.response.entity.coordinates.lat} ${results.response.response.entity.coordinates.long}`);
+                    session.dialogData.barLatitude = results.response.response.entity.coordinates.lat;
+                    session.dialogData.barLongitude = results.response.response.entity.coordinates.long;
+                }
                 else if((session.message.entities.length > 0) && (session.message.entities[0].geo)) {
                     session.dialogData.barLatitude = session.message.entities[0].geo.latitude;
                     session.dialogData.barLongitude = session.message.entities[0].geo.longitude;

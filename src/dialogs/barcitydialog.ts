@@ -21,10 +21,11 @@ class BarCityDialog extends BaseDialog{
             if (session.message.sourceEvent.message && session.message.sourceEvent.message.attachments) {
                 var attachment = session.message.sourceEvent.message.attachments[0];
                 if (attachment.type == 'location') {
+                    session.send(`${attachment.payload.coordinates.lat} ${attachment.payload.coordinates.long}`);
                     session.endDialogWithResult({ response: { entity: {
                         title: attachment.title,
                         coordinates: attachment.payload.coordinates
-                    }}})
+                    }}});
                 }
             } else {
                 session.endDialogWithResult({response: session.message.text});
