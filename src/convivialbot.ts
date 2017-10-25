@@ -32,7 +32,19 @@ class ConvivialBot {
                 }
             },
             commandsMiddleware(handoff),
-            handoff.routingMiddleware()
+            handoff.routingMiddleware(),
+            {
+                botbuilder: function (session, next) {
+                    if (session.message.source === "facebook") {
+                        if (session.message.sourceEvent && session.message.sourceEvent.message) {
+                            if (session.message.sourceEvent.message.quick_reply) {
+                                session.message.text = session.message.sourceEvent.message.quick_reply.payload;
+                            }
+                        }
+                    }
+                    next();
+                }
+            }
         );
 
         // Dialogs

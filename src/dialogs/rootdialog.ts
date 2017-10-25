@@ -40,6 +40,9 @@ class RootDialog extends BaseDialog{
                     else if(response.result.metadata.intentName === "Handover") {
                         session.beginDialog("facebookHandover");
                     }
+                    else if(response.result.metadata.intentName === "End") {
+                        session.endConversation(response.result.fulfillment.messages[0].speech);
+                    }
                     else {
                         session.beginDialog("apiAi", response.result);
                     }
