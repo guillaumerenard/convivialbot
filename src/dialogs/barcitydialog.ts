@@ -7,16 +7,20 @@ class BarCityDialog extends BaseDialog{
         super();
         this.dialog = [
             (session, args, next) => {
-                let cityMessage = new builder.Message(session).text("In which city are you looking for a bar ?")
-                .sourceEvent({
-                    facebook: {
-                        quick_replies: [{
-                            content_type: "location"
-                        }]
-                    }
-                });
-                builder.Prompts.text(session, cityMessage);
-                //session.send(cityMessage);
+                if(session.message.source === "facebook") {
+                    let cityMessage = new builder.Message(session).text("In which city are you looking for a bar ?")
+                    .sourceEvent({
+                        facebook: {
+                            quick_replies: [{
+                                content_type: "location"
+                            }]
+                        }
+                    });
+                    session.send(cityMessage);
+                }
+                else {
+                    builder.Prompts.text(session, "In which city are you looking for a bar ?");
+                }
             },
             (session, results, next) => {
                 if (session.message.sourceEvent.message && session.message.sourceEvent.message.attachments) {
