@@ -19,19 +19,12 @@ class SearchBarDialog extends BaseDialog{
                 }
             },
             (session, results, next) => {
-                session.send("Lets go :");
                 if(session.dialogData.barCity !== "") {
                     next();
                 }
                 else if(results.response.entity) {
-                    session.send(`J'AI !!!! ${results.response.entity.coordinates.lat} ${results.response.entity.coordinates.long}`);
                     session.dialogData.barLatitude = results.response.entity.coordinates.lat;
                     session.dialogData.barLongitude = results.response.entity.coordinates.long;
-                    next();
-                }
-                else if((session.message.entities.length > 0) && (session.message.entities[0].geo)) {
-                    session.dialogData.barLatitude = session.message.entities[0].geo.latitude;
-                    session.dialogData.barLongitude = session.message.entities[0].geo.longitude;
                     next();
                 }
                 else {
@@ -58,6 +51,7 @@ class SearchBarDialog extends BaseDialog{
                 session.send(`I am looking for you to bar in ${session.dialogData.barCity} matching your criteria`);
                 session.sendTyping();
                 session.dialogData.initPromise.then(() => {
+                    session.send(`${session.dialogData.barLatitude} ${session.dialogData.barLongitude}`);
                     BarService.searchBars(session.dialogData.barLatitude, session.dialogData.barLongitude, session.dialogData.barAtmosphere, session.dialogData.barWithWho).then(searchResults => {
                         if(searchResults && searchResults.status.foundOutlets > 0) {
                             session.send(`I found ${searchResults.status.foundOutlets} bars matching your request`);
