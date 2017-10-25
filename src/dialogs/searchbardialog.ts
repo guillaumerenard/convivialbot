@@ -120,7 +120,7 @@ class SearchBarDialog extends BaseDialog{
                 }
                 session.dialogData.result = args;
                 session.dialogData.contexts = args.contexts;
-
+                session.send(session.dialogData.barCity);
                 if(session.dialogData.barCity) {
                     GoogleService.geocoding(session.dialogData.barCity).then(result => {
                         session.dialogData.barLatitude = result.geometry.location.lat;
