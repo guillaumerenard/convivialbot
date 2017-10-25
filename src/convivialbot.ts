@@ -36,12 +36,13 @@ class ConvivialBot {
             handoff.routingMiddleware(),
             {
                 botbuilder: function (session, next) {
+                    session.send(session.message.source)
                     if (session.message.source === "facebook") {
-                        session.send(session.message.source);
+                        session.send(session.message.sourceEvent.message);
                         if (session.message.sourceEvent && session.message.sourceEvent.message) {
-                            session.send(session.message.sourceEvent.message);
+                            session.send(session.message.sourceEvent.message.quick_reply);
                             if (session.message.sourceEvent.message.quick_reply) {
-                                session.send(session.message.sourceEvent.quick_reply);
+                                session.send(session.message.sourceEvent.message.quick_reply.payload);
                                 session.message.text = session.message.sourceEvent.message.quick_reply.payload;
                             }
                         }
