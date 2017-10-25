@@ -109,6 +109,7 @@ class SearchBarDialog extends BaseDialog{
         return new Promise<null>((resolve, reject) => {
             session.send("Start init");
             if(args) {
+                session.send("avec args");
                 if(args.metadata.intentName === "AddSearchBarCriteria") {
                     args.parameters.BarCity !== "" ? session.dialogData.barCity = args.parameters.BarCity : session.dialogData.barCity = args.parameters.ContextBarCity;
                     args.parameters.BarAtmosphere !== "" ? session.dialogData.barAtmosphere = args.parameters.BarAtmosphere : session.dialogData.barAtmosphere = args.parameters.ContextBarAtmosphere;
@@ -119,17 +120,19 @@ class SearchBarDialog extends BaseDialog{
                     session.dialogData.barAtmosphere = args.parameters.BarAtmosphere;
                     session.dialogData.barWithWho = args.parameters.BarWithWho;
                 }
+                session.send("end get data");
                 session.dialogData.result = args;
                 session.dialogData.contexts = args.contexts;
                 session.send(session.dialogData.barCity);
                 if(session.dialogData.barCity) {
+                    session.send("geocoding");
                     GoogleService.geocoding(session.dialogData.barCity).then(result => {
                         session.dialogData.barLatitude = result.geometry.location.lat;
                         session.dialogData.barLongitude = result.geometry.location.lng;
                         resolve();
                     }, reason => {
                         reject(reason);
-                    })
+                    });
                 }
                 else {
                     resolve();
