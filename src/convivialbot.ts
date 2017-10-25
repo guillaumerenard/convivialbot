@@ -6,6 +6,7 @@ import RootDialog from "./dialogs/rootdialog";
 import GreetingDialog from "./dialogs/greetingdialog";
 import SearchBarDialog from "./dialogs/searchbardialog";
 import ApiAiDialog from "./dialogs/apiaidialog";
+import FacebookHandoverDialog from "./dialogs/facebookhandoverdialog";
 
 class ConvivialBot {
 
@@ -39,6 +40,7 @@ class ConvivialBot {
         new GreetingDialog().register(this.bot, "greeting");
         new SearchBarDialog(this.apiaiApp).register(this.bot, "searchBar");
         new ApiAiDialog().register(this.bot, "apiAi");
+        new FacebookHandoverDialog().register(this.bot, "facebookHandover");
     }
 }
 
