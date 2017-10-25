@@ -15,19 +15,7 @@ class SearchBarDialog extends BaseDialog{
                     next();
                 }
                 else {
-                    if(session.message.source === "facebook") {
-                        let cityMessage = new builder.Message(session).text("In which city are you looking for a bar ?")
-                        .sourceEvent({
-                            facebook: {
-                                quick_replies: [{
-                                    content_type: "location"
-                                }]
-                            }
-                        });
-                        session.send(cityMessage);
-                    } else {
-                        builder.Prompts.text(session, "In which city are you looking for a bar ?");
-                    }
+                    session.beginDialog("barCity");
                 }
             },
             (session, results, next) => {

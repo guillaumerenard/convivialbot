@@ -4,6 +4,7 @@ import { Handoff } from "./handoff";
 import { commandsMiddleware } from "./commands";
 import RootDialog from "./dialogs/rootdialog";
 import GreetingDialog from "./dialogs/greetingdialog";
+import BarCityDialog from "./dialogs/barcitydialog";
 import SearchBarDialog from "./dialogs/searchbardialog";
 import ApiAiDialog from "./dialogs/apiaidialog";
 import FacebookHandoverDialog from "./dialogs/facebookhandoverdialog";
@@ -50,6 +51,7 @@ class ConvivialBot {
         // Dialogs
         new RootDialog(this.apiaiApp).register(this.bot, "/");
         new GreetingDialog().register(this.bot, "greeting");
+        new BarCityDialog().register(this.bot, "barCity");
         new SearchBarDialog(this.apiaiApp).register(this.bot, "searchBar");
         new ApiAiDialog().register(this.bot, "apiAi");
         new FacebookHandoverDialog().register(this.bot, "facebookHandover");
