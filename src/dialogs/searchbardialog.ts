@@ -50,6 +50,9 @@ class SearchBarDialog extends BaseDialog{
             (session, results, next) => {
                 session.send(`I am looking for you to bar in ${session.dialogData.barCity} matching your criteria`);
                 session.sendTyping();
+                if(session.dialogData.initPromise) {
+                    session.send("ma promise est là");
+                }
                 session.dialogData.initPromise.then(() => {
                     session.send(`${session.dialogData.barLatitude} ${session.dialogData.barLongitude}`);
                     BarService.searchBars(session.dialogData.barLatitude, session.dialogData.barLongitude, session.dialogData.barAtmosphere, session.dialogData.barWithWho).then(searchResults => {
