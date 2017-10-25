@@ -15,7 +15,8 @@ class SearchBarDialog extends BaseDialog{
                     next();
                 }
                 else {
-                    let cityMessage = new builder.Message(session).text("In which city are you looking for a bar ?")
+                    if(session.message.source === "facebook") {
+                        let cityMessage = new builder.Message(session).text("In which city are you looking for a bar ?")
                         .sourceEvent({
                             facebook: {
                                 quick_replies: [{
@@ -23,10 +24,10 @@ class SearchBarDialog extends BaseDialog{
                                 }]
                             }
                         });
-                    builder.Prompts.text(session, cityMessage, {
-                        promptAfterAction: false
-                    });
-                    //builder.Prompts.text(session, "In which city are you looking for a bar ?");
+                        session.send(cityMessage);
+                    } else {
+                        builder.Prompts.text(session, "In which city are you looking for a bar ?");
+                    }
                 }
             },
             (session, results, next) => {
