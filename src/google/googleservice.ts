@@ -6,7 +6,7 @@ class GoogleService {
         return new Promise<any>((resolve, reject) => {
             https.get({
                 host: "maps.googleapis.com",
-                path: `/maps/api/geocode/json?key=${process.env.GOOGLE_MAPS_API_KEY}&address=${address.replace(" ", "%20")}`
+                path: `/maps/api/geocode/json?key=${process.env.GOOGLE_MAPS_API_KEY}&address=${address.replace(/ /g, "%20")}`
             }, response => {
                 let body = "";
                 response.on("data", data => {

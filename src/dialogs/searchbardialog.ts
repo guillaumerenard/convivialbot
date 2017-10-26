@@ -112,7 +112,7 @@ class SearchBarDialog extends BaseDialog{
                 args.parameters.BarWithWho !== "" ? session.dialogData.barWithWho = args.parameters.BarWithWho : session.dialogData.barWithWho = args.parameters.ContextBarAtmosphere;
             }
             else {
-                session.dialogData.barCity = args.parameters.BarCity;
+                session.dialogData.barCity = args.parameters.BarAddress || args.parameters.BarCity;
                 session.dialogData.barAtmosphere = args.parameters.BarAtmosphere;
                 session.dialogData.barWithWho = args.parameters.BarWithWho;
             }
