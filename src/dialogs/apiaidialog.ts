@@ -8,13 +8,12 @@ class ApiAiDialog extends BaseDialog{
         super();
         this.dialog = [
             (session, args, next) => {
-                let fulfillment = builder.EntityRecognizer.findEntity(args.intent.entities, "fulfillment");
-                if(fulfillment && (fulfillment.entity.messages.length > 0)) {
-                    let messages = fulfillment.entity.messages.filter(message => {
+                if(args.fulfillment.messages.length > 0) {
+                    let messages = args.fulfillment.messages.filter(message => {
                         return message.platform === "facebook";
                     });
                     if(messages.length === 0) {
-                        messages = fulfillment.entity.messages;
+                        messages = args.fulfillment.messages;
                     }
                     let responseMessage = new builder.Message(session);
                     let responseMessageAttachments: builder.AttachmentType[] = [];
