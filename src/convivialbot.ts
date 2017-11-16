@@ -37,7 +37,7 @@ class ConvivialBot {
         );
 
         // Recognizer
-        this.bot.recognizer(new builder.LuisRecognizer(`https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/93df406e-d5fc-4339-8435-4323a6463365?subscription-key=387ce3fb12fe4f7095747936830250bf&timezoneOffset=1.0&q=`));
+        //this.bot.recognizer(new builder.LuisRecognizer(`https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/93df406e-d5fc-4339-8435-4323a6463365?subscription-key=387ce3fb12fe4f7095747936830250bf&timezoneOffset=1.0&q=`));
 
         // Dialogs
         new RootDialog(this.apiaiApp).register(this.bot, "/");
