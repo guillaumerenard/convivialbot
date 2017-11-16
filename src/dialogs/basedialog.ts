@@ -9,8 +9,11 @@ abstract class BaseDialog {
      * @param bot 
      * @param path 
      */
-    public register(bot: builder.UniversalBot, path: string): void {
-        bot.dialog(path, this.dialog);
+    public register(bot: builder.UniversalBot, path: string, action?: builder.ITriggerActionOptions): void {
+        let dialog = bot.dialog(path, this.dialog);
+        if(action) {
+            dialog.triggerAction(action);
+        }
     }
 
 }

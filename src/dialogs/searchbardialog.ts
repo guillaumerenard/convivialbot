@@ -106,18 +106,24 @@ class SearchBarDialog extends BaseDialog{
      */
     private initDialog(session: builder.Session, args: any): void {
         if(args) {
-            if(args.metadata.intentName === "AddSearchBarCriteria") {
-                args.parameters.BarCity !== "" ? session.dialogData.barCity = args.parameters.BarCity : session.dialogData.barCity = args.parameters.ContextBarCity;
-                args.parameters.BarAtmosphere !== "" ? session.dialogData.barAtmosphere = args.parameters.BarAtmosphere : session.dialogData.barAtmosphere = args.parameters.ContextBarAtmosphere;
-                args.parameters.BarWithWho !== "" ? session.dialogData.barWithWho = args.parameters.BarWithWho : session.dialogData.barWithWho = args.parameters.ContextBarAtmosphere;
+            if(args.metadata) {
+                if(args.metadata.intentName === "AddSearchBarCriteria") {
+                    args.parameters.BarCity !== "" ? session.dialogData.barCity = args.parameters.BarCity : session.dialogData.barCity = args.parameters.ContextBarCity;
+                    args.parameters.BarAtmosphere !== "" ? session.dialogData.barAtmosphere = args.parameters.BarAtmosphere : session.dialogData.barAtmosphere = args.parameters.ContextBarAtmosphere;
+                    args.parameters.BarWithWho !== "" ? session.dialogData.barWithWho = args.parameters.BarWithWho : session.dialogData.barWithWho = args.parameters.ContextBarAtmosphere;
+                }
+                else {
+                    session.dialogData.barCity = args.parameters.BarAddress || args.parameters.BarCity;
+                    session.dialogData.barAtmosphere = args.parameters.BarAtmosphere;
+                    session.dialogData.barWithWho = args.parameters.BarWithWho;
+                }
+                session.dialogData.result = args;
+                session.dialogData.contexts = args.contexts;
             }
-            else {
-                session.dialogData.barCity = args.parameters.BarAddress || args.parameters.BarCity;
-                session.dialogData.barAtmosphere = args.parameters.BarAtmosphere;
-                session.dialogData.barWithWho = args.parameters.BarWithWho;
+            else if (args.intent) {
+                let barCity = builder.EntityRecognizer.findEntity(args.intent.entities, "builtin.geography.city");
+                barCity !== null ? session.dialogData.barCity = barCity.entity : session.dialogData.barCity = "";
             }
-            session.dialogData.result = args;
-            session.dialogData.contexts = args.contexts;
         }
     }
 }
