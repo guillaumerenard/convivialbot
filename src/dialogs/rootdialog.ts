@@ -37,6 +37,9 @@ class RootDialog extends BaseDialog{
                         session.userData.isAgent ? session.send("You are an agent !") : session.send("You are not an agent !");
                         next();
                     }
+                    else if(response.result.metadata.intentName === "Geolocation") {
+                        session.beginDialog("geolocation");
+                    }
                     else if(response.result.metadata.intentName === "Handover") {
                         session.beginDialog("facebookHandover");
                     }

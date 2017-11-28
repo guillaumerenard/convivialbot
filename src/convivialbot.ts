@@ -8,6 +8,7 @@ import BarCityDialog from "./dialogs/barcitydialog";
 import SearchBarDialog from "./dialogs/searchbardialog";
 import ApiAiDialog from "./dialogs/apiaidialog";
 import FacebookHandoverDialog from "./dialogs/facebookhandoverdialog";
+import GeolocationDialog from "./dialogs/geolocationdialog";
 
 class ConvivialBot {
 
@@ -48,6 +49,8 @@ class ConvivialBot {
         });
         new ApiAiDialog().register(this.bot, "apiAi");
         new FacebookHandoverDialog().register(this.bot, "facebookHandover");
+        new GeolocationDialog().register(this.bot, "geolocation");
+
     }
 }
 
