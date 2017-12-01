@@ -14,6 +14,7 @@ class GeolocationDialog extends BaseDialog{
                         session.send(`You are in ${city.long_name}`);
                     });
                 });
+                session.endDialog();
             }
         ];
     }
